@@ -1,0 +1,1 @@
+D:\Repos\DOS\Azure Functions\Dos.Irm.Office365Functions.ArmDeploy\obj\Debug\Dos.Irm.Office365Functions.ArmDeploy.deployproj.CoreCompileInputs.cache

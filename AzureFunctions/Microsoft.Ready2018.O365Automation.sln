@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Ready2018.O365Functions", "Microsoft.Ready2018.O365Functions\Microsoft.Ready2018.O365Functions.csproj", "{EF52C81D-17A3-4DBA-87F4-CD011A8FEF94}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "Microsoft.Ready2018.O365Functions.ArgTemplates", "Microsoft.Ready2018.O365Functions.ArgTemplates\Microsoft.Ready2018.O365Functions.ArgTemplates.deployproj", "{47FA07A8-05BD-443A-B26A-FEBB6DC08870}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF52C81D-17A3-4DBA-87F4-CD011A8FEF94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF52C81D-17A3-4DBA-87F4-CD011A8FEF94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF52C81D-17A3-4DBA-87F4-CD011A8FEF94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF52C81D-17A3-4DBA-87F4-CD011A8FEF94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47FA07A8-05BD-443A-B26A-FEBB6DC08870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47FA07A8-05BD-443A-B26A-FEBB6DC08870}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47FA07A8-05BD-443A-B26A-FEBB6DC08870}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47FA07A8-05BD-443A-B26A-FEBB6DC08870}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D79C54A-9E7C-490A-9C80-8A22910BFA81}
+	EndGlobalSection
+EndGlobal
