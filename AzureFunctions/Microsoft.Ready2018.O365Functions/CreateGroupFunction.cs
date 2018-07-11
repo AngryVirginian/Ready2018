@@ -187,7 +187,7 @@ namespace Microsoft.Ready2018.O365Functions
             string putUrl = $"https://graph.microsoft.com/beta/groups/{groupId}/team";
             var payload = JsonConvert.SerializeObject(teamSettings);
             HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
-            //Put command
+            //Put command to Graph
             var response = await delegatedAccessClient.PutAsync(putUrl, content); 
             if (response.IsSuccessStatusCode)
             {

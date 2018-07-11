@@ -1,18 +1,18 @@
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
-using OfficeDevPnP.Core;
-using OfficeDevPnP.Core.Sites;
-using Microsoft.SharePoint.Client;
-using Microsoft.Ready2018.O365Functions.Utilities;
-using Newtonsoft.Json;
-using Microsoft.Ready2018.O365Functions.Models;
-using System.Configuration;
 using Microsoft.Online.SharePoint.TenantAdministration;
+using Microsoft.Ready2018.O365Functions.Models;
+using Microsoft.Ready2018.O365Functions.Utilities;
+using Microsoft.SharePoint.Client;
+using Newtonsoft.Json;
+using OfficeDevPnP.Core.Sites;
+using OfficeDevPnP.Core.Entities;
+using System.Configuration;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Microsoft.Ready2018.O365Functions
 {
@@ -28,9 +28,7 @@ namespace Microsoft.Ready2018.O365Functions
 
                 var request = JsonConvert.DeserializeObject<CreateCommunicationSiteRequest>(content);
 
-                //var token = new GraphApiUtility(log).GetGraphApiDelegatedAuthenticationToken(ConfigurationManager.AppSettings["o365:SpoTenantUrl"]).Result;
-                //using (ClientContext clientContext = AppForSharePointOnlineWebToolkit.TokenHelper.GetClientContextWithAccessToken(ConfigurationManager.AppSettings["o365:SpoTenantUrl"], token))
-
+                //Connect to the Tenant Root Url
                 using (ClientContext clientContext = new SharePointUtility(log).GetClientContext(ConfigurationManager.AppSettings["o365:SpoTenantUrl"], executionContext))
                 {
 
@@ -38,7 +36,8 @@ namespace Microsoft.Ready2018.O365Functions
                     log.Info($"Site { request.Url} exists is {tenant.SiteExists(request.Url)}");
 
                     log.Info($"Preparing site creation info to { request.Url }");
-                    // Create new "modern" communication site at the url https://[tenant].sharepoint.com/sites/mymoderncommunicationsite
+
+                    // Create new "modern" communication site using PnP
                     var communicationContext = await clientContext.CreateSiteAsync(new CommunicationSiteCollectionCreationInformation
                     {
                         Url = request.Url, // Mandatory
@@ -54,7 +53,15 @@ namespace Microsoft.Ready2018.O365Functions
                     communicationContext.Load(communicationContext.Web, w => w.Url);
                     communicationContext.ExecuteQueryRetry();
                     log.Info($"New communication site created at {communicationContext.Web.Url}");
-                    //Console.WriteLine(communicationContext.Web.Url);
+
+                    //Somehow the codes above does not add request.Owner as site collection admin
+                    using (ClientContext newSiteClientContext = new SharePointUtility(log).GetClientContext(communicationContext.Web.Url, executionContext))
+                    {
+                        var siteCollectionAdmins = new List<UserEntity>();
+                        siteCollectionAdmins.Add(new UserEntity() { LoginName = request.Owner, Email = request.Owner });
+                        newSiteClientContext.Web.AddAdministrators(siteCollectionAdmins, true);
+                        log.Info($"{ request.Owner} was added as site collection admin");
+                    }
                 }
 
                 return req.CreateResponse(HttpStatusCode.OK, new { siteCreated = true, siteUrl = request.Url });
