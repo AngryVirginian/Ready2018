@@ -57,9 +57,9 @@ namespace Microsoft.Ready2018.O365Functions.Utilities
         /// </summary>
         /// <param name="notification"></param>
         /// <param name="log"></param>
-        /// <param name="exeuctionContext"></param>
+        /// <param name="executionContext"></param>
         /// <returns></returns>
-        public ClientContext GetClientContextWithAzureAppIdentity(string webUrl, ExecutionContext exeuctionContext)
+        public ClientContext GetClientContextWithAzureAppIdentity(string webUrl, ExecutionContext executionContext)
         {
             //string url = String.Format("https://{0}{1}", ConfigurationManager.AppSettings["o365:SpoTenantUrl"], notification.SiteUrl);
 
@@ -69,12 +69,12 @@ namespace Microsoft.Ready2018.O365Functions.Utilities
             string clientSecret = ConfigurationManager.AppSettings["aad:ApplicationSecret"];
             string certName = ConfigurationManager.AppSettings["aad:ApplicationCertificatePrivateKeyFileName"];
             string certPassword = KeyVaultUtility.GetSecret(ConfigurationManager.AppSettings["kv:ApplicationCertificatePasswordSecretName"], this.TraceWriter).Result;
-            this.TraceWriter.Info($"Tenant Name is { spoTenantName } Client ID is {clientId } client Secret is { clientSecret } Cert name is { certName }  Cert password is { certPassword }");
+            //this.TraceWriter.Info($"Tenant Name is { spoTenantName } Client ID is {clientId } client Secret is { clientSecret } Cert name is { certName }  Cert password is { certPassword }");
             //Cert is at the root of the function
-            //string certPath = Path.Combine(Directory.GetParent(exeuctionContext.FunctionDirectory).FullName, certName);
-            string certPath = Path.Combine(exeuctionContext.FunctionDirectory, certName);
+            //string certPath = Path.Combine(exeuctionContext.FunctionDirectory, certName);
+            string certPath = Path.Combine(Directory.GetParent(executionContext.FunctionDirectory).FullName, certName);
             this.TraceWriter.Info($"Getting X509Certificate from { certPath }");
-            this.TraceWriter.Info($"Parent path is {Path.Combine(Directory.GetParent(exeuctionContext.FunctionDirectory).FullName, certName)}");
+            this.TraceWriter.Info($"Parent path is {Path.Combine(Directory.GetParent(executionContext.FunctionDirectory).FullName, certName)}");
             X509Certificate2 cert = new X509Certificate2(certPath, certPassword);
             this.TraceWriter.Info($"Creating SP Client Context with Azure App Identity to {webUrl}");
             

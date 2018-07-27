@@ -42,7 +42,7 @@ namespace Microsoft.Ready2018.O365Functions
                     owners.Add(request.OwnerUpn);
                     // Graph API create team only supports delegated access permission.  Must add service principal to owner of the Group
                     string teamServicePrincipal = KeyVaultUtility.GetSecret(ConfigurationManager.AppSettings["kv:ServicePrincipalNameSecretName"], log).Result;
-                    if (teamServicePrincipal.ToLower() != request.OwnerUpn.ToLower())
+                    if (request.CreateTeam && (teamServicePrincipal.ToLower() != request.OwnerUpn.ToLower()))
                     {
                         owners.Add(teamServicePrincipal);
                     }
